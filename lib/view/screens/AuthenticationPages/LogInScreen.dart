@@ -1,20 +1,26 @@
 import 'dart:io';
 
 import 'package:btos/controllers/logincontroller.dart';
+import 'package:btos/main.dart';
 import 'package:btos/services/api_services.dart';
 import 'package:btos/widgets/CustomButton.dart';
 import 'package:btos/widgets/customSocialButton.dart';
-import 'package:btos/widgets/theme.dart';
+import 'package:btos/widgets/Values/theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class LogInPage extends StatelessWidget {
-  LogInPage({Key? key}) : super(key: key);
-  final LogInController controller = Get.find();
-  TextEditingController mailController = TextEditingController();
-  TextEditingController passController = TextEditingController();
+class LogInPage extends StatefulWidget {
+  @override
+  State<LogInPage> createState() => _LogInPageState();
+}
 
+class _LogInPageState extends State<LogInPage> {
+  final LogInController controller = Get.find();
+
+  TextEditingController mailController = TextEditingController();
+
+  TextEditingController passController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -135,7 +141,7 @@ class LogInPage extends StatelessWidget {
                       style: TextStyle(fontWeight: FontWeight.w400, fontSize: 12),
                     ),
                     TextButton(
-                        onPressed: () {},
+                        onPressed: () =>Get.offAndToNamed("/signup"),
                         child: const Text(
                           "Register",
                           style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12, color: backgroundColor),
@@ -150,16 +156,15 @@ class LogInPage extends StatelessWidget {
     );
   }
 
-  Map<String, String> s = {};
-
   logInMethod(BuildContext context) async {
     try {
       ApiServices().post("api/login", context, {
         "email": mailController.text,
         "password": passController.text,
         "os": Platform.operatingSystem,
-        "user_type_id": "2",
+        "user_type_id": Platform.isIOS?iosInfo.utsname.machine:androidInfo.model,
       }).then((value) {
+        print("Value $value");
         if (value.containsKey("token")) {
           Get.offAndToNamed("/buyerPage");
         } else {
