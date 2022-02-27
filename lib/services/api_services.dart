@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:btos/view/screens/AuthenticationPages/LogInScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -18,7 +19,7 @@ class ApiServices {
     userToken = g ??"";
   }
 
-  Future<dynamic> get(String uri, BuildContext context, {dynamic body, String? fullUrl}) async {
+  Future<dynamic> get(String uri, {dynamic body, String? fullUrl}) async {
     await getPrefs();
     if (userToken.isNotEmpty) {
       print("before $uri");
@@ -31,7 +32,7 @@ class ApiServices {
         'Content-Type': 'application/json',
       };
       var response = await http.get(url, headers: header);
-      return _returnResponse(response, context, edit: false);
+      return _returnResponse(response, edit: false);
     }
   }
   Future<dynamic> delete(String uri, BuildContext context) async {
@@ -47,7 +48,7 @@ class ApiServices {
         };
         var response = await http.delete(url, headers: header);
         print("Get fun Res ${json.decode(response.body)}");
-        return _returnResponse(response, context, edit: false);
+        return _returnResponse(response, edit: false);
       }
     }catch(e){
       print("Error ${e.toString()}");
@@ -65,7 +66,7 @@ class ApiServices {
       };
       var response = await http.post(uri, headers: header);
       print("Get fun Res ${json.decode(response.body)}");
-      return _returnResponse(response, context, edit: false);
+      return _returnResponse(response, edit: false);
     }
   }
 
@@ -89,7 +90,7 @@ class ApiServices {
                   ? json.encode(body)
                   : body
               : {});
-      return _returnResponse(response, context, edit: false);
+      return _returnResponse(response, edit: false);
   }
 
   Future<dynamic> put(String uri, BuildContext context, [dynamic body, bool shouldEncodeBody = false]) async {
@@ -108,7 +109,7 @@ class ApiServices {
     }
   }
 
-  dynamic _returnResponse(http.Response response, BuildContext context, {required bool edit}) async{
+  dynamic _returnResponse(http.Response response, {required bool edit}) async{
     switch (response.statusCode) {
       case 200:
         return edit ? response.body : json.decode(response.body.toString());
@@ -119,12 +120,7 @@ class ApiServices {
       case 401:
         preferences.setString('token', '');
         userToken = "";
-        return Navigator.pushAndRemoveUntil(
-          context,
-          Platform.isIOS
-              ? CupertinoPageRoute(builder: (context) => LogInPage())
-              : MaterialPageRoute(builder: (context) => LogInPage()),
-              (Route<dynamic> route) => false,);
+        return Get.offNamedUntil('/login', (route) => false);
       case 403:
         throw json.decode(response.body.toString())["message"];
       case 422:

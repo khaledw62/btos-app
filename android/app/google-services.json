@@ -1,0 +1,13 @@
+{
+  "installed": {
+    "client_id": "167874213748-j28btp9shs51jg1elm6hd5vvjt96c5hp.apps.googleusercontent.com",
+    "project_id": "renty-1566927254737",
+    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+    "token_uri": "https://oauth2.googleapis.com/token",
+    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+    "redirect_uris": [
+      "urn:ietf:wg:oauth:2.0:oob",
+      "http://localhost"
+    ]
+  }
+}

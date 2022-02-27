@@ -1,8 +1,11 @@
 import 'package:btos/widgets/CustomButton.dart';
 import 'package:btos/widgets/Values/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 
 class WelcomeBtoSScreen extends StatelessWidget {
+  const WelcomeBtoSScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -10,24 +13,42 @@ class WelcomeBtoSScreen extends StatelessWidget {
       body: SafeArea(
         child: Container(
           width: double.infinity,
-          padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-          decoration: BoxDecoration(
-            color: Theme.of(context).backgroundColor
-          ),
+          padding: const EdgeInsets.fromLTRB(16, 10, 16, 0),
+          decoration: BoxDecoration(color: Theme.of(context).backgroundColor),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(
-                height: MediaQuery.of(context).size.height*0.4,
-                child: Image.asset("assets/images/signinlogo.png"),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      child: ClipRRect(
+                        child: SvgPicture.asset("assets/icons/Icon.svg"),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      "Welcome B TO S",
+                      style: Themes().logoTitleStyle,
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      "Browse as",
+                      style: Themes().logoSubTitleStyle,
+                    ),
+                  ],
+                ),
               ),
               Expanded(
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     SizedBox(
                       child: CustomButton(
-                        buttonText: "BUYER - Tenant",
-                        onTap: () {
-                        },
+                        buttonText: "BUYER - TENANT",
+                        onTap: ()=>Get.offAndToNamed("/classificationPage"),
                       ),
                       width: double.infinity,
                     ),
@@ -62,8 +83,7 @@ class WelcomeBtoSScreen extends StatelessWidget {
                     SizedBox(
                       child: CustomButton(
                         buttonText: "SELLER",
-                        onTap: () {
-                        },
+                        onTap: ()=>Get.offAndToNamed("/login"),
                       ),
                       width: double.infinity,
                     ),
@@ -71,14 +91,13 @@ class WelcomeBtoSScreen extends StatelessWidget {
                     SizedBox(
                       child: CustomButton(
                         buttonText: "DEVELOPER",
-                        onTap: () {
-                        },
+                        onTap: ()=>Get.offAndToNamed("/login"),
                       ),
                       width: double.infinity,
                     ),
                   ],
                 ),
-              )
+              ),
             ],
           ),
         ),
