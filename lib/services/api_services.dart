@@ -1,7 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
-import 'package:btos/view/screens/AuthenticationPages/LogInScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -35,7 +33,7 @@ class ApiServices {
       return _returnResponse(response, edit: false);
     }
   }
-  Future<dynamic> delete(String uri, BuildContext context) async {
+  Future<dynamic> delete(String uri) async {
     try{
       await getPrefs();
       if (userToken.isNotEmpty) {
@@ -55,7 +53,7 @@ class ApiServices {
     }
   }
 
-  Future<dynamic> postFullLink(Uri uri, String type, BuildContext context, [dynamic body]) async {
+  Future<dynamic> postFullLink(Uri uri, String type, [dynamic body]) async {
     await getPrefs();
     if (userToken.isNotEmpty) {
       print("get function : $uri");
@@ -70,7 +68,7 @@ class ApiServices {
     }
   }
 
-  Future<dynamic> post(String uri, BuildContext context, [dynamic body, bool shouldEncodeBody = false]) async {
+  Future<dynamic> post(String uri, [dynamic body, bool shouldEncodeBody = false]) async {
     await getPrefs();
       var url = Uri.https(_baseUrl, uri);
       //print("$url $uri $context $body");
@@ -93,11 +91,10 @@ class ApiServices {
       return _returnResponse(response, edit: false);
   }
 
-  Future<dynamic> put(String uri, BuildContext context, [dynamic body, bool shouldEncodeBody = false]) async {
+  Future<dynamic> put(String uri, [dynamic body, bool shouldEncodeBody = false]) async {
     await getPrefs();
     if (userToken.isNotEmpty) {
       var url = Uri.https(this._baseUrl, uri);
-      print("$url $uri $context $body");
       Map<String, String> headers = {
         'Accept': 'application/json',
         'Content-Type': 'application/json; charset=UTF-8',

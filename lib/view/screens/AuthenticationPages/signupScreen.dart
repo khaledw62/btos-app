@@ -1,15 +1,18 @@
 import 'package:btos/controllers/logincontroller.dart';
 import 'package:btos/widgets/CustomButton.dart';
+import 'package:btos/widgets/Values/TextFieldInputDecoration.dart';
 import 'package:btos/widgets/Values/sizes.dart';
 import 'package:btos/widgets/Values/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class SignUpScreen extends GetWidget<AuthViewModel> {
+class SignUpScreen extends StatelessWidget {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController mailController = TextEditingController();
   TextEditingController passController = TextEditingController();
   TextEditingController comPassController = TextEditingController();
+  final AuthViewModel controller = Get.find();
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -34,11 +37,7 @@ class SignUpScreen extends GetWidget<AuthViewModel> {
                         TextFormField(
                           keyboardType: TextInputType.text,
                           autofillHints: const [AutofillHints.name],
-                          decoration: const InputDecoration(
-                            labelText: "Full Name",
-                            prefixIcon: Icon(Icons.person),
-                            border: OutlineInputBorder(borderSide: BorderSide(color: neutralGray)),
-                          ),
+                          decoration: inputDecoration(label: "FullName".tr, icon: Icons.person),
                           onSaved: (value) {
                             controller.auth['name'] = value!;
                           },
@@ -53,11 +52,7 @@ class SignUpScreen extends GetWidget<AuthViewModel> {
                           controller: mailController,
                           keyboardType: TextInputType.emailAddress,
                           autofillHints: const [AutofillHints.email],
-                          decoration: const InputDecoration(
-                            labelText: "Your Email",
-                            prefixIcon: Icon(Icons.email_outlined),
-                            border: OutlineInputBorder(borderSide: BorderSide(color: neutralGray)),
-                          ),
+                          decoration: inputDecoration(label: "YourEmail".tr, icon: Icons.email_outlined),
                           onSaved: (value) {
                             controller.auth['email'] = value!;
                           },
@@ -76,7 +71,7 @@ class SignUpScreen extends GetWidget<AuthViewModel> {
                             keyboardType: TextInputType.visiblePassword,
                             obscureText: controller.registrationPassVisible.value,
                             decoration: InputDecoration(
-                              labelText: "Password",
+                              labelText: "Password".tr,
                               prefixIcon: const Icon(Icons.password),
                               suffixIcon: GestureDetector(
                                 child: (controller.registrationPassVisible.value)
@@ -86,13 +81,17 @@ class SignUpScreen extends GetWidget<AuthViewModel> {
                                   controller.setRegistrationPassVisible();
                                 },
                               ),
-                              border: const OutlineInputBorder(borderSide: BorderSide(color: neutralGray)),
+                              border: OutlineInputBorder(
+                                borderSide: const BorderSide(color: neutralGray),
+                                borderRadius: BorderRadius.circular(20.0),
+                                gapPadding: 20,
+                              ),
                             ),
                             onSaved: (value) {
                               controller.auth['password'] = value!;
                             },
                             validator: (value) {
-                              if (value == null||value.isEmpty) {
+                              if (value == null || value.isEmpty) {
                                 return "InvalidPassword".tr;
                               }
                             },
@@ -117,7 +116,11 @@ class SignUpScreen extends GetWidget<AuthViewModel> {
                                   controller.setRegistrationPassVisible();
                                 },
                               ),
-                              border: const OutlineInputBorder(borderSide: BorderSide(color: neutralGray)),
+                              border: OutlineInputBorder(
+                                borderSide: const BorderSide(color: neutralGray),
+                                borderRadius: BorderRadius.circular(20.0),
+                                gapPadding: 20,
+                              ),
                             ),
                             onSaved: (value) {
                               controller.auth['password_confirmation'] = value!;
@@ -136,7 +139,7 @@ class SignUpScreen extends GetWidget<AuthViewModel> {
                             onTap: () {
                               _formKey.currentState!.save();
                               if (_formKey.currentState!.validate()) {
-                                controller.registrationWithEmailAndPass(context);
+                                controller.registrationWithEmailAndPass();
                               }
                             },
                           ),
@@ -150,11 +153,12 @@ class SignUpScreen extends GetWidget<AuthViewModel> {
                               style: TextStyle(fontWeight: FontWeight.w400, fontSize: 12),
                             ),
                             TextButton(
-                                onPressed: () => Get.offAndToNamed("/login"),
-                                child: const Text(
-                                  "Sign In",
-                                  style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12, color: backgroundColor),
-                                )),
+                              onPressed: () => Get.offAndToNamed("/login"),
+                              child: const Text(
+                                "Sign In",
+                                style: TextStyle(fontWeight: FontWeight.w700, fontSize: 12, color: backgroundColor),
+                              ),
+                            ),
                           ],
                         )
                       ],

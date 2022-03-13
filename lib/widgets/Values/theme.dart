@@ -39,7 +39,7 @@ class Themes {
 
   TextStyle get subTitleStyle {
     return TextStyle(
-      fontSize: 15,
+      fontSize: 17,
       fontWeight: FontWeight.normal,
       color: Get.isDarkMode ? white : black,
     );

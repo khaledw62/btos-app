@@ -5,4 +5,7 @@ const Map<String, String> ar = {
   "InvalidEmail":'ايميل خاطئ',
   "InvalidPassword":'كلمة مرور خاطئة',
   "Password":'كلمة المرور',
+  "FullName":'الاسم بالكامل',
+  "logout":'تسجيل الخروج',
+  "language":'English',
 };

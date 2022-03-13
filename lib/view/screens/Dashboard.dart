@@ -1,5 +1,6 @@
 import 'package:btos/controllers/dashboardController.dart';
 import 'package:btos/controllers/logincontroller.dart';
+import 'package:btos/models/AuthModels/user.dart';
 import 'package:btos/view/screens/MainScreanPages/Account.dart';
 import 'package:btos/view/screens/MainScreanPages/Explore.dart';
 import 'package:btos/view/screens/MainScreanPages/Favourite.dart';
@@ -12,14 +13,31 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-class Dashboard extends StatelessWidget {
-  final DashboardController dashboardController = Get.find();
+class Dashboard extends StatefulWidget {
+  bool? fromRegistration;
+  Dashboard({this.fromRegistration});
+  @override
+  State<Dashboard> createState() => _DashboardState();
+}
+
+class _DashboardState extends State<Dashboard> {
+  final DashboardController dashboardController = Get.put(DashboardController());
+
   List<Widget> pages = [
-    HomeScreen(),
-    Explore(),
-    Favourite(),
-    Account(),
+    new HomeScreen(),
+    new Explore(),
+    /*new Favourite(),*/
+    new Account(),
   ];
+  @override
+  void initState() {
+    /*if(widget.user != null) {
+      if (!widget.user!.verified && widget.fromRegistration != null) {
+        Get.toNamed('/accountVerificationScreen');
+      }
+    }*/
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +77,7 @@ class Dashboard extends StatelessWidget {
             ),
             label: 'Explore',
           ),
-          BottomNavigationBarItem(
+          /*BottomNavigationBarItem(
             icon: Icon(
               Icons.favorite_border,
               size: 30,
@@ -69,7 +87,7 @@ class Dashboard extends StatelessWidget {
               Icons.favorite,
               size: 30,
             ),
-          ),
+          ),*/
           BottomNavigationBarItem(
             icon: Icon(
               Icons.person_outline,

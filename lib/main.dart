@@ -1,15 +1,16 @@
+import 'dart:convert';
 import 'dart:io';
-import 'package:btos/controllers/dashboardController.dart';
-import 'package:btos/controllers/logincontroller.dart';
 import 'package:btos/langs/translation.dart';
 import 'package:btos/view/screens/AdditionalPages/locations_page.dart';
 import 'package:btos/view/screens/AuthenticationPages/LogInScreen.dart';
 import 'package:btos/view/screens/AuthenticationPages/forgot_password_screen.dart';
+import 'package:btos/view/screens/AuthenticationPages/otp/accountVerificationScreen.dart';
 import 'package:btos/view/screens/AuthenticationPages/signupScreen.dart';
 import 'package:btos/view/screens/Dashboard.dart';
 import 'package:btos/view/screens/MainScreanPages/Home.dart';
 import 'package:btos/view/screens/SearchPage.dart';
 import 'package:btos/view/screens/buyerPages/buyerPage.dart';
+import 'package:btos/view/screens/welcomeScreen/FirstPage.dart';
 import 'package:btos/view/screens/welcomeScreen/classification_page.dart';
 import 'package:btos/view/screens/welcomeScreen/welcomeScreen.dart';
 import 'package:btos/widgets/Values/theme.dart';
@@ -18,7 +19,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'controllers/PropertiesControllers/PropertiesListingController.dart';
+
+import 'controllers/logincontroller.dart';
 
 DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
 
@@ -32,34 +34,45 @@ getDeviceInfo() async {
   }
   if (Platform.isIOS) {
     iosInfo = await deviceInfo.iosInfo;
+    print("D Name ${iosInfo.name}");
   }
 }
-String initialRoute = '/login';
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  getDeviceInfo();
+setInit()async{
+  final AuthViewModel controller = Get.put(AuthViewModel(),permanent: true);
   SharedPreferences preferences = await SharedPreferences.getInstance();
-  String? g = preferences.getString('token');
-  if(g!=null) {
+  String g = (preferences.getString('token') ?? "");
+  String userPref = (preferences.getString('user') ?? "");
+  print("userPref       $userPref");
+  if(userPref != ""){
+    Map<String,dynamic> userMap = jsonDecode(userPref) as Map<String, dynamic>;
+    print("setInit            $userMap");
+    controller.setUserMap(userMap);
+  }
+  if(g != "") {
     initialRoute = "/dashboard";
   }
-  runApp(const MyApp());
+  else {
+    initialRoute = '/login';
+  }
+}
+String initialRoute = '';
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await setInit();
+  await getDeviceInfo();
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
-    Get.put(AuthViewModel());
-    Get.put(DashboardController(),permanent: true);
     return GetMaterialApp(
       title: 'BToS',
       debugShowCheckedModeBanner: false,
       theme: Themes.light,
       darkTheme: Themes.dark,
       themeMode: ThemeMode.light,
-      initialRoute: '/signup',
+      initialRoute: initialRoute,
       translations: Translation(),
       locale: const Locale('en'),
       localizationsDelegates: const [
@@ -78,6 +91,8 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/forgotPass', page: () => ForgotPassword()),
         GetPage(name: '/classificationPage', page: () => const ClassificationPage()),
         GetPage(name: '/locationsPage', page: () => LocationsPage()),
+        GetPage(name: '/accountVerificationScreen', page: () => AccountVerificationScreen()),
+        GetPage(name: '/firstPage', page: () => FirstPage()),
       ],
     );
   }

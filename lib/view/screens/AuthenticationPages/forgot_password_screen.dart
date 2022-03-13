@@ -1,10 +1,14 @@
 import 'package:btos/widgets/CustomButton.dart';
 import 'package:btos/widgets/Values/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-class ForgotPassword extends StatelessWidget {
-  ForgotPassword({Key? key}) : super(key: key);
+import '../../../controllers/logincontroller.dart';
+import '../../../widgets/Values/TextFieldInputDecoration.dart';
+
+class ForgotPassword extends GetWidget<AuthViewModel> {
   TextEditingController mailController = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +23,43 @@ class ForgotPassword extends StatelessWidget {
           width: double.infinity,
           height: double.infinity,
           padding: const EdgeInsets.symmetric(vertical: 20,horizontal: 20),
-          child: Column(
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                TextFormField(
+                  controller: mailController,
+                  keyboardType: TextInputType.emailAddress,
+                  autofillHints: const [AutofillHints.email],
+                  decoration: inputDecoration(label: "YourEmail".tr, icon: Icons.email_outlined),
+                  onSaved: (value) {
+                    controller.auth['email'] = value!;
+                  },
+                  validator: (value) {
+                    if (!GetUtils.isEmail(value!)) {
+                      return "InvalidEmail".tr;
+                    }
+                  },
+                ),
+                const SizedBox(height: 14),
+                SizedBox(
+                  child: CustomButton(
+                    buttonText: "Find Your Account",
+                    onTap: () {
+                      _formKey.currentState!.save();
+                      if (_formKey.currentState!.validate()) {
+                        if(GetUtils.isEmail(mailController.text)){
+                          controller.forgotPassword();
+                        }
+                      }
+                    },
+                  ),
+                  width: double.infinity,
+                ),
+              ],
+            ),
+          ),
+          /*Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const Text("Enter Your E-Mail"),
@@ -37,12 +77,15 @@ class ForgotPassword extends StatelessWidget {
                 child: CustomButton(
                   buttonText: "Find Your Account",
                   onTap: () {
+                    if(GetUtils.isEmail(mailController.text)){
+                      controller.forgotPassword(mailController.text);
+                    }
                   },
                 ),
                 width: double.infinity,
               ),
             ],
-          ),
+          ),*/
         ),
       ),
     );

@@ -6,4 +6,7 @@ const Map<String, String> en = {
   "Password":'Password',
   "InvalidPassword":'Invalid Password',
   "InvalidInput":'Invalid Input',
+  "FullName":'Full Name',
+  "logout":'Sign Out',
+  "language":'العربية',
 };

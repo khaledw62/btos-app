@@ -7,12 +7,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
-class LogInPage extends GetWidget<AuthViewModel> {
+class LogInPage extends StatelessWidget {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   TextEditingController mailController = TextEditingController();
 
   TextEditingController passController = TextEditingController();
+  final AuthViewModel controller = Get.put(AuthViewModel());
 
   @override
   Widget build(BuildContext context) {
@@ -91,7 +92,7 @@ class LogInPage extends GetWidget<AuthViewModel> {
                             ),
                             border: OutlineInputBorder(
                                 borderSide: const BorderSide(color: neutralGray),
-                                borderRadius: BorderRadius.circular(15.0),
+                                borderRadius: BorderRadius.circular(20.0),
                                 gapPadding: 20),
                           ),
                           onSaved: (value) {
@@ -107,11 +108,14 @@ class LogInPage extends GetWidget<AuthViewModel> {
                       const SizedBox(height: 14),
                       SizedBox(
                         child: CustomButton(
-                          buttonText: 'login'.tr,
+                          text: Text(
+                            'login'.tr,
+                            style: const TextStyle(fontWeight: FontWeight.w700, color: white, fontSize: 15),
+                          ),
                           onTap: () {
                             _formKey.currentState!.save();
                             if (_formKey.currentState!.validate()) {
-                              controller.logInWithEmailAndPass(context);
+                              controller.logInWithEmailAndPass();
                             }
                           },
                         ),

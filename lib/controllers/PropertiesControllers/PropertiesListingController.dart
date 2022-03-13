@@ -10,19 +10,20 @@ class PropertiesListingController extends GetxController{
   getPropertiesListing({bool isFull = false})async{
     try{
       ApiServices().get(isFull?'':endPoint,fullUrl: isFull && next!.value!=null?next!.value:null).then((value) {
-        next?.value = value['links']['next'];
-        total.value = value['meta']['total'];
+        print("properties Values = $value");
+        /*next?.value = value['links']['next'];
+        total.value = value['meta']['total']??0;*/
         value["data"].forEach((element) {
           propertiesListing.value.add(Property.fromJson(element));
         });
       });
     }catch(e){
-
     }
   }
   @override
   void onInit() {
     getPropertiesListing();
+    /*getPrefs();*/
     super.onInit();
   }
 }
