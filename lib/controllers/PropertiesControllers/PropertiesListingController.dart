@@ -4,11 +4,13 @@ import 'package:get/get.dart';
 
 class PropertiesListingController extends GetxController{
   Rx<RxList<Property>> propertiesListing = RxList<Property>().obs;
-  String endPoint = "api/properties/listing";
+  String endPoint = "api/props/listing";
+  Rx<Property> property = Property.fake().obs;
   Rx<String?>? next;
   RxInt total = 0.obs;
   getPropertiesListing({bool isFull = false})async{
     try{
+      propertiesListing.value.clear();
       ApiServices().get(isFull?'':endPoint,fullUrl: isFull && next!.value!=null?next!.value:null).then((value) {
         print("properties Values = $value");
         /*next?.value = value['links']['next'];
@@ -20,10 +22,14 @@ class PropertiesListingController extends GetxController{
     }catch(e){
     }
   }
-  @override
-  void onInit() {
-    getPropertiesListing();
-    /*getPrefs();*/
-    super.onInit();
+  getProperty(int id)async{
+    try{
+      clearProperty();
+      ApiServices().get("api/props/show/$id").then((value) {
+        property.value = Property.fromJson(value['data']);
+      });
+    }catch(e){
+    }
   }
+  clearProperty()=>property.value = Property.fake();
 }

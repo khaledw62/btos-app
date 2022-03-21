@@ -16,10 +16,13 @@ class AuthViewModel extends GetxController {
   GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
   RxBool logInPassVisible = true.obs;
   RxBool registrationPassVisible = true.obs;
+  RxBool isUser = false.obs;
   Map<String, String> auth = {"email": "", "password": ""};
   Map<String, String> otpDigits = {"1": "", "2": "", "3": "", "4": "", "5": "", "6": ""};
   final googleSignIn = GoogleSignIn(signInOption: SignInOption.standard);
   Rx<User> userMap = User.fake().obs;
+
+  setVisitorAsUser()=>isUser.value = true;
 
   setUserMap(Map<String,dynamic> u){
     userMap.value = User.fromJson2(u);
@@ -60,6 +63,7 @@ class AuthViewModel extends GetxController {
         bool result = await sharedPreferences.setString('user', jsonEncode(user));
         print("result     $result");
         if(result){
+          isUser.value = true;
           Get.offAll(
             Dashboard(),
           );
@@ -96,6 +100,7 @@ class AuthViewModel extends GetxController {
             messageText: Text("Authentication failed"),
             backgroundColor: backgroundColor);
       } else {
+        isUser.value = true;
         Get.offAll(() => Dashboard());
       }
     } catch (e) {
@@ -161,6 +166,7 @@ class AuthViewModel extends GetxController {
       if (value.containsKey("message")) {
         SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
         sharedPreferences.remove('token');
+        isUser.value = false;
         Get.offAndToNamed("/login");
       } else {
         String a = extractMessageFromMap(value, "please try again");

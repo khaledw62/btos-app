@@ -1,15 +1,25 @@
 import 'package:flutter/cupertino.dart';
 
-class SizeConfig{
-  static late MediaQueryData mediaQuery;
-  static late double screenHeight;
-  static late double screenWidth;
-  static late Orientation orientation;
+class SizeConfig {
+  MediaQueryData mediaQuery;
+  double screenHeight;
+  double screenWidth;
+  Orientation orientation;
 
-  void init(BuildContext context){
-    mediaQuery = MediaQuery.of(context);
-    screenHeight = mediaQuery.size.height-mediaQuery.padding.top;
-    screenWidth = mediaQuery.size.width;
-    orientation = mediaQuery.orientation;
+  SizeConfig({
+    required this.screenHeight,
+    required this.mediaQuery,
+    required this.orientation,
+    required this.screenWidth,
+  });
+
+  factory SizeConfig.init(BuildContext context) {
+    MediaQueryData a = MediaQuery.of(context);
+    return SizeConfig(
+      screenHeight: a.size.height - a.padding.top,
+      mediaQuery: a,
+      orientation: a.orientation,
+      screenWidth: a.size.width,
+    );
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:btos/models/PropertiesModels/Property.dart';
 import 'package:btos/services/api_services.dart';
 import 'package:get/get.dart';
@@ -8,38 +10,15 @@ class PropertiesFavouriteController extends GetxController{
   getPropertiesFavourite({bool isFull = false})async{
     try{
       ApiServices().get(endPoint).then((value) {
-        print("Favourite Values = $value");
+        print("propertiesFavourite length before ${propertiesFavourite.value.length}");
+        propertiesFavourite.value.clear();
         value["data"].forEach((element) {
           propertiesFavourite.value.add(Property.fromJson(element));
         });
+        print("propertiesFavourite length after ${propertiesFavourite.value.length}");
       });
     }catch(e){
+      print("Error        ${e.toString()}");
     }
-  }
-  @override
-  void onInit() {
-    /*getPropertiesFavourite();*/
-    super.onInit();
-  }
-  @override
-  void update([List<Object>? ids, bool condition = true]) {
-    print("update");
-    super.update(ids, condition);
-  }
-  @override
-  void refresh() {
-    print("refresh");
-    super.refresh();
-  }
-  @override
-  void onReady() {
-    print("onReady");
-    super.onReady();
-  }
-  @override
-  // TODO: implement onStart
-  InternalFinalCallback<void> get onStart {
-    print("onStart");
-    return super.onStart;
   }
 }

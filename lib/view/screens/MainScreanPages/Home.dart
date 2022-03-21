@@ -1,6 +1,5 @@
 import 'package:btos/controllers/PropertiesControllers/PropertiesListingController.dart';
 import 'package:btos/controllers/logincontroller.dart';
-import 'package:btos/view/screens/MainScreanPages/Favourite.dart';
 import 'package:btos/widgets/Properties/PropertyCard.dart';
 import 'package:btos/widgets/Values/sizes.dart';
 import 'package:btos/widgets/Values/theme.dart';
@@ -9,23 +8,32 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-class HomeScreen extends GetWidget<PropertiesListingController> {
+class HomeScreen extends StatefulWidget {
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
   final listViewController = ScrollController();
 
   final AuthViewModel authViewModel = Get.find();
+
   @override
   final PropertiesListingController controller = Get.put(PropertiesListingController());
+  @override
+  void initState() {
+    controller.getPropertiesListing();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    SizeConfig().init(context);
+    SizeConfig sizeConfig = SizeConfig.init(context);
     return Directionality(
       textDirection: Get.locale == const Locale("ar") ? TextDirection.rtl : TextDirection.ltr,
-      child: SafeArea(
-        child: ListView(
-          controller: listViewController,
+      child: SingleChildScrollView(
+        child: Column(
           children: [
-            IconButton(onPressed: ()=>Get.to(()=>Favourite()), icon: Icon(Icons.favorite_border)),
             const SizedBox(
               height: 20,
             ),
@@ -56,8 +64,8 @@ class HomeScreen extends GetWidget<PropertiesListingController> {
               ),
             GestureDetector(
               child: Container(
-                width: SizeConfig.screenWidth * 0.8,
-                height: 40,
+                width: sizeConfig.screenWidth * 0.8,
+                height: 50,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(100),
                   color: white,
@@ -82,7 +90,7 @@ class HomeScreen extends GetWidget<PropertiesListingController> {
                   ],
                 ),
               ),
-              onTap: () => Get.toNamed('/searchPage'),
+              onTap: ()=>Get.toNamed('/searchPage'),
             ),
             const SizedBox(
               height: 15,
@@ -142,7 +150,6 @@ class HomeScreen extends GetWidget<PropertiesListingController> {
             GetX<PropertiesListingController>(
                 init: controller,
                 builder: (controller) {
-                  print("list size ${controller.total.value}");
                   return Column(
                     children: controller.propertiesListing.value
                         .map(

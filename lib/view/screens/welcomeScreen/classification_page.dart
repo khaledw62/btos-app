@@ -1,3 +1,5 @@
+import 'package:btos/controllers/SystemManagers/routesController.dart';
+import 'package:btos/controllers/logincontroller.dart';
 import 'package:btos/widgets/CustomButton.dart';
 import 'package:btos/widgets/Values/theme.dart';
 import 'package:flutter/material.dart';
@@ -5,7 +7,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 class ClassificationPage extends StatelessWidget {
-  const ClassificationPage({Key? key}) : super(key: key);
+  RoutesController routesController = Get.find();
+  AuthViewModel authController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -14,9 +17,7 @@ class ClassificationPage extends StatelessWidget {
         child: Container(
           width: double.infinity,
           padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-          decoration: BoxDecoration(
-              color: Theme.of(context).backgroundColor
-          ),
+          decoration: BoxDecoration(color: Theme.of(context).backgroundColor),
           child: Column(
             children: [
               Expanded(
@@ -30,7 +31,10 @@ class ClassificationPage extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 16),
-                    Text("Welcome B TO S",style: Themes().logoTitleStyle,),
+                    Text(
+                      "Welcome B TO S",
+                      style: Themes().logoTitleStyle,
+                    ),
                   ],
                 ),
               ),
@@ -41,7 +45,7 @@ class ClassificationPage extends StatelessWidget {
                     SizedBox(
                       child: CustomButton(
                         buttonText: "RENT",
-                        onTap: () {},
+                        onTap: goToAllPlaces,
                       ),
                       width: double.infinity,
                     ),
@@ -49,19 +53,26 @@ class ClassificationPage extends StatelessWidget {
                     SizedBox(
                       child: CustomButton(
                         buttonText: "RESALE",
-                        onTap: () {
-                        },
+                        onTap: goToAllPlaces,
                       ),
                       width: double.infinity,
                     ),
-                    const SizedBox(height: 21),
-                    SizedBox(
-                      child: CustomButton(
-                        buttonText: "NEW PROJECT",
-                        onTap: () {
-                        },
-                      ),
-                      width: double.infinity,
+                    GetX<RoutesController>(
+                      builder: (routesController) => routesController.isSeller.value
+                          ? Container()
+                          : Column(
+                              children: [
+                                const SizedBox(height: 21),
+                                SizedBox(
+                                  child: CustomButton(
+                                    buttonText: "NEW PROJECT",
+                                    onTap: goToAllPlaces,
+                                  ),
+                                  width: double.infinity,
+                                ),
+                              ],
+                            ),
+                      init: routesController,
                     ),
                   ],
                 ),
@@ -71,5 +82,17 @@ class ClassificationPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  goToAllPlaces() {
+    if (routesController.isSeller.value) {
+      if (authController.isUser.value) {
+        Get.offNamedUntil('/locationsPage', (route) => false);
+      } else {
+        Get.offNamedUntil('/login', (route) => false);
+      }
+    } else {
+      Get.offNamedUntil('/locationsPage', (route) => false);
+    }
   }
 }

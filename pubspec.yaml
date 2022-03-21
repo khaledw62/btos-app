@@ -48,9 +48,13 @@ dependencies:
   intl: ^0.17.0
   infinite_scroll_pagination: ^3.1.0
   like_button: ^2.0.4
+  image_picker: ^0.8.4+11
+  dropdown_search: ^2.0.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_native_splash: ^2.1.0
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -58,7 +62,11 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^1.0.0
-
+flutter_native_splash:
+  color: "#5cc2db"
+  image: assets/splashimage.png
+  android: true
+  ios: true
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 

@@ -1,3 +1,4 @@
+import 'package:btos/controllers/SystemManagers/routesController.dart';
 import 'package:btos/widgets/CustomButton.dart';
 import 'package:btos/widgets/Values/theme.dart';
 import 'package:flutter/material.dart';
@@ -5,7 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 class WelcomeBtoSScreen extends StatelessWidget {
-  const WelcomeBtoSScreen({Key? key}) : super(key: key);
+  RoutesController routesController = Get.put(RoutesController(),permanent: true);
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +49,10 @@ class WelcomeBtoSScreen extends StatelessWidget {
                     SizedBox(
                       child: CustomButton(
                         buttonText: "BUYER - TENANT",
-                        onTap: ()=>Get.offAndToNamed("/classificationPage"),
+                        onTap: () {
+                          routesController.isBuyer();
+                          Get.offAndToNamed("/classificationPage");
+                        },
                       ),
                       width: double.infinity,
                     ),
@@ -83,7 +87,7 @@ class WelcomeBtoSScreen extends StatelessWidget {
                     SizedBox(
                       child: CustomButton(
                         buttonText: "SELLER",
-                        onTap: ()=>Get.offAndToNamed("/login"),
+                        onTap: ()=>Get.offAndToNamed("/classificationPage"),
                       ),
                       width: double.infinity,
                     ),

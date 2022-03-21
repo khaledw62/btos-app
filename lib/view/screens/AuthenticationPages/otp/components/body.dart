@@ -7,6 +7,7 @@ import 'accountVerificationForm.dart';
 class Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    SizeConfig sizeConfig = SizeConfig.init(context);
     return SizedBox(
       width: double.infinity,
       child: Padding(
@@ -15,7 +16,7 @@ class Body extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              SizedBox(height: SizeConfig.screenHeight * 0.05),
+              SizedBox(height: sizeConfig.screenHeight * 0.05),
               Text(
                 "Account Verification",
                 style: Themes().titleStyle,
@@ -23,7 +24,7 @@ class Body extends StatelessWidget {
               const Text("We sent your code to +20 155 081 ***"),
               buildTimer(),
               const AccountVerificationForm(),
-              SizedBox(height: SizeConfig.screenHeight * 0.1),
+              SizedBox(height: sizeConfig.screenHeight * 0.1),
               GestureDetector(
                 onTap: () {
                   // OTP code resend

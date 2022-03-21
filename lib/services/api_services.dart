@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -19,18 +20,22 @@ class ApiServices {
 
   Future<dynamic> get(String uri, {dynamic body, String? fullUrl}) async {
     await getPrefs();
-    if (userToken.isNotEmpty) {
-      print("before $uri");
-      var url = fullUrl == null ? Uri.https(this._baseUrl, uri, body) : Uri.parse(fullUrl);
-      print("get function url : $url");
-      print("get function userToken : $userToken");
-      var header = <String, String>{
-        'Accept': 'application/json',
-        'Authorization': 'Bearer ' + this.userToken,
-        'Content-Type': 'application/json',
-      };
-      var response = await http.get(url, headers: header);
-      return _returnResponse(response, edit: false);
+    try{
+      if (userToken.isNotEmpty) {
+        print("before $uri");
+        var url = fullUrl == null ? Uri.https(this._baseUrl, uri, body) : Uri.parse(fullUrl);
+        print("get function url : $url");
+        print("get function userToken : $userToken");
+        var header = <String, String>{
+          'Accept': 'application/json',
+          'Authorization': 'Bearer ' + this.userToken,
+          'Content-Type': 'application/json',
+        };
+        var response = await http.get(url, headers: header);
+        return _returnResponse(response, edit: false);
+      }
+    }on SocketException{
+      Get.offNamedUntil('/noConnectionPage', (route) => false);
     }
   }
   Future<dynamic> delete(String uri) async {

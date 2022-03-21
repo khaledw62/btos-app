@@ -1,51 +1,43 @@
 import 'package:btos/controllers/dashboardController.dart';
-import 'package:btos/controllers/logincontroller.dart';
-import 'package:btos/models/AuthModels/user.dart';
 import 'package:btos/view/screens/MainScreanPages/Account.dart';
 import 'package:btos/view/screens/MainScreanPages/Explore.dart';
-import 'package:btos/view/screens/MainScreanPages/Favourite.dart';
+import 'package:btos/view/screens/MainScreanPages/FavouritePages/MainFavouritePage.dart';
 import 'package:btos/view/screens/MainScreanPages/Home.dart';
 import 'package:btos/widgets/Values/sizes.dart';
 import 'package:btos/widgets/Values/theme.dart';
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 
 class Dashboard extends StatefulWidget {
   bool? fromRegistration;
+
   Dashboard({this.fromRegistration});
+
   @override
   State<Dashboard> createState() => _DashboardState();
 }
 
 class _DashboardState extends State<Dashboard> {
-  final DashboardController dashboardController = Get.put(DashboardController());
+  final DashboardController dashboardController = Get.put(DashboardController(),permanent: true);
 
   List<Widget> pages = [
-    new HomeScreen(),
-    new Explore(),
-    /*new Favourite(),*/
-    new Account(),
+    HomeScreen(),
+    Explore(),
+    MainFavouritePage(),
+    Account(),
   ];
-  @override
-  void initState() {
-    /*if(widget.user != null) {
-      if (!widget.user!.verified && widget.fromRegistration != null) {
-        Get.toNamed('/accountVerificationScreen');
-      }
-    }*/
-    super.initState();
-  }
+  int currentPage = 0;
 
   @override
   Widget build(BuildContext context) {
-    SizeConfig().init(context);
+    SizeConfig sizeConfig = SizeConfig.init(context);
     return Scaffold(
       backgroundColor: Theme.of(context).copyWith().backgroundColor,
-      body: GetX<DashboardController>(
-        builder: (dashboardController) => pages[dashboardController.index.value],
+      body: SafeArea(
+        child: GetX<DashboardController>(
+          init: dashboardController,
+          builder: (dashboardController)=>dashboardController.currentWidget.value,
+        ),
       ),
       bottomNavigationBar: getBottomBar(),
     );
@@ -56,7 +48,7 @@ class _DashboardState extends State<Dashboard> {
   Widget getBottomBar() {
     return GetX<DashboardController>(
       init: dashboardController,
-      builder: (newController) => BottomNavigationBar(
+      builder: (dashboardController)=>BottomNavigationBar(
         selectedItemColor: backgroundColor,
         items: const [
           BottomNavigationBarItem(
@@ -77,7 +69,7 @@ class _DashboardState extends State<Dashboard> {
             ),
             label: 'Explore',
           ),
-          /*BottomNavigationBarItem(
+          BottomNavigationBarItem(
             icon: Icon(
               Icons.favorite_border,
               size: 30,
@@ -87,7 +79,7 @@ class _DashboardState extends State<Dashboard> {
               Icons.favorite,
               size: 30,
             ),
-          ),*/
+          ),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.person_outline,
@@ -101,9 +93,10 @@ class _DashboardState extends State<Dashboard> {
           ),
         ],
         onTap: (index) {
-          newController.setPassVisible(index);
+          dashboardController.setCurrentWidget(Container(child: pages[index],));
+          dashboardController.setIndex(index);
         },
-        currentIndex: newController.index.value,
+        currentIndex: dashboardController.index.value,
         showUnselectedLabels: true,
         unselectedItemColor: Get.isDarkMode ? white : neutralDark,
         backgroundColor: Get.isDarkMode ? neutralDark : white,

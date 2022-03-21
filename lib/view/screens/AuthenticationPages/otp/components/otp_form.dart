@@ -52,11 +52,12 @@ class _OtpFormState extends State<OtpForm>{
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig sizeConfig = SizeConfig.init(context);
     return Form(
       key: _formKey,
       child: Column(
         children: [
-          SizedBox(height: SizeConfig.screenHeight * 0.15),
+          SizedBox(height: sizeConfig.screenHeight * 0.15),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -183,7 +184,7 @@ class _OtpFormState extends State<OtpForm>{
               ),
             ],
           ),
-          SizedBox(height: SizeConfig.screenHeight * 0.15),
+          SizedBox(height: sizeConfig.screenHeight * 0.15),
           SizedBox(
             child: CustomButton(
               buttonText: "Continue",

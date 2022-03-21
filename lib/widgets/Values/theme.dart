@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 const Color white = Color.fromRGBO(255, 255, 255, 1);
+const Color offWhite = Color.fromRGBO(245, 240, 240, 1);
 const Color black = Color.fromRGBO(0, 0, 0, 1);
+const Color backColor = Color.fromRGBO(28, 28, 27, 1);
 const Color lightRed = Color.fromRGBO(255, 0, 0, 1);
 const Color darkRed = Color.fromRGBO(128, 32, 0, 1);
 const Color neutralDark = Color.fromRGBO(34, 50, 99, 1);
@@ -10,23 +12,33 @@ const Color neutralGray = Color.fromRGBO(144, 152, 177, 1);
 const Color backgroundColor = Color.fromRGBO(92, 194, 219, 1);
 
 class Themes {
+  Widget standardAppbar(BuildContext context,{Widget? leading,Widget? title,bool? centerTitle}){
+    return AppBar(
+      foregroundColor: Theme.of(context).appBarTheme.foregroundColor,
+      backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+      elevation: 0,
+      leading: leading,
+      title: title,
+      centerTitle: centerTitle,
+    );
+  }
   static final light = ThemeData(
       primaryColor: lightRed,
-      backgroundColor: white,
+      backgroundColor: offWhite,
       brightness: Brightness.light,
       focusColor: white,
       appBarTheme: const AppBarTheme(
-        backgroundColor: white,
-        foregroundColor: black,
+        backgroundColor: offWhite,
+        foregroundColor: backColor,
       ));
   static final dark = ThemeData(
       primaryColor: darkRed,
-      backgroundColor: black,
+      backgroundColor: backColor,
       brightness: Brightness.dark,
       focusColor: white,
       appBarTheme: const AppBarTheme(
-        backgroundColor: black,
-        foregroundColor: white,
+        backgroundColor: backColor,
+        foregroundColor: offWhite,
       ));
 
   TextStyle get headingStyle {

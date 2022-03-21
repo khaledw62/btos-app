@@ -1,39 +1,54 @@
 import 'package:btos/controllers/PropertiesControllers/PropertiesFavouriteController.dart';
+import 'package:btos/controllers/dashboardController.dart';
+import 'package:btos/view/screens/MainScreanPages/FavouritePages/MainFavouritePage.dart';
 import 'package:btos/widgets/Properties/PropertyCard.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../widgets/Values/sizes.dart';
 
-class Favourite extends GetWidget<PropertiesFavouriteController> {
-
+class Favourite extends StatefulWidget {
   @override
-  final PropertiesFavouriteController controller = Get.put(PropertiesFavouriteController());
+  State<Favourite> createState() => _FavouriteState();
+}
+
+class _FavouriteState extends State<Favourite> {
+  final PropertiesFavouriteController controller = Get.find();
+  final DashboardController dashboardController = Get.find();
 
   @override
   Widget build(BuildContext context) {
-    SizeConfig().init(context);
     return Directionality(
       textDirection: Get.locale == const Locale("ar") ? TextDirection.rtl : TextDirection.ltr,
       child: Scaffold(
-        appBar: AppBar(),
+        backgroundColor: Theme.of(context).backgroundColor,
         body: SafeArea(
           child: ListView(
             children: [
-              const SizedBox(
-                height: 20,
+              AppBar(
+                foregroundColor: Theme.of(context).appBarTheme.foregroundColor,
+                backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+                elevation: 0,
+                leading: IconButton(
+                  onPressed: () => dashboardController.setCurrentWidget(Container(
+                    child: MainFavouritePage(),
+                  )),
+                  icon: const Icon(
+                    Icons.clear,
+                    size: 35,
+                  ),
+                ),
               ),
               GetX<PropertiesFavouriteController>(
-                  init: controller,
-                  builder: (controller) {
-                    return Column(
-                      children: controller.propertiesFavourite.value
-                          .map(
-                            (e) => PropertyCard(property: e),
-                      )
-                          .toList(),
-                    );
-                  }),
+                init: controller,
+                builder: (controller) {
+                  return Column(
+                    children: controller.propertiesFavourite.value
+                        .map(
+                          (e) => PropertyCard(property: e),
+                        )
+                        .toList(),
+                  );
+                },
+              ),
             ],
           ),
         ),

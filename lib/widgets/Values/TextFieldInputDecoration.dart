@@ -10,3 +10,12 @@ InputDecoration inputDecoration({required String label, required IconData icon})
         gapPadding: 20
       ),
     );
+
+InputDecoration inputDecorationWithNoIcon({required String label}) => InputDecoration(
+  labelText: label,
+  border: OutlineInputBorder(
+      borderSide: const BorderSide(color: neutralGray),
+      borderRadius: BorderRadius.circular(20.0),
+      gapPadding: 20
+  ),
+);

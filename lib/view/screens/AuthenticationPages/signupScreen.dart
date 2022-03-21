@@ -15,7 +15,7 @@ class SignUpScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SizeConfig().init(context);
+    SizeConfig sizeConfig = SizeConfig.init(context);
     return Scaffold(
       body: SafeArea(
         child: Container(
@@ -25,7 +25,7 @@ class SignUpScreen extends StatelessWidget {
           child: Column(
             children: [
               SizedBox(
-                height: SizeConfig.screenHeight * 0.3,
+                height: sizeConfig.screenHeight * 0.3,
                 child: Image.asset("assets/images/signinlogo.png"),
               ),
               Expanded(
