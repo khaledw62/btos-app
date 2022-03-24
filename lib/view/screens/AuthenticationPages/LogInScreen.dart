@@ -18,14 +18,6 @@ class LogInPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      /*appBar: AppBar(
-        actions: [
-          IconButton(onPressed: () {
-            print("Lang ${Get.locale}");
-            Get.updateLocale(Get.locale == Locale("ar") ? Locale("en"):Locale("ar"));
-          }, icon: Icon(Icons.language))
-        ],
-      ),*/
       body: SafeArea(
         child: Container(
           width: double.infinity,

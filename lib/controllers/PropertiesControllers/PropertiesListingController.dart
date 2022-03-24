@@ -6,15 +6,15 @@ class PropertiesListingController extends GetxController{
   Rx<RxList<Property>> propertiesListing = RxList<Property>().obs;
   String endPoint = "api/props/listing";
   Rx<Property> property = Property.fake().obs;
-  Rx<String?>? next;
+  Rx<String?> next = Rx<String?>(null);
   RxInt total = 0.obs;
   getPropertiesListing({bool isFull = false})async{
     try{
-      propertiesListing.value.clear();
-      ApiServices().get(isFull?'':endPoint,fullUrl: isFull && next!.value!=null?next!.value:null).then((value) {
+      ApiServices().get(isFull?'':endPoint,fullUrl: isFull && next.value!=null?next.value:null).then((value) {
         print("properties Values = $value");
-        /*next?.value = value['links']['next'];
-        total.value = value['meta']['total']??0;*/
+        next.value = value['links']['next'];
+        //total.value = value['meta']['total']??0;
+        if(!isFull)propertiesListing.value.clear();
         value["data"].forEach((element) {
           propertiesListing.value.add(Property.fromJson(element));
         });

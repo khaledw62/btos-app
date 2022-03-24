@@ -23,7 +23,7 @@ class ApiServices {
     try{
       if (userToken.isNotEmpty) {
         print("before $uri");
-        var url = fullUrl == null ? Uri.https(this._baseUrl, uri, body) : Uri.parse(fullUrl);
+        var url = fullUrl == null ? Uri.https(_baseUrl, uri, body) : Uri.parse(fullUrl);
         print("get function url : $url");
         print("get function userToken : $userToken");
         var header = <String, String>{
